@@ -13,10 +13,7 @@ public class Main {
 //        Session session = sessionFactory.openSession();
 //        session.close();
 
-        perist();
-        save();
-        find();
-        findAndChange();
+        updateQuery();
         SessionManager.getSessionFactory().close();
     }
 
@@ -80,6 +77,20 @@ public class Main {
         query.setParameter("value", name);
         List<Costumer> list = query.list();
         System.out.println(list);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public static void updateQuery() {
+        Session session = SessionManager.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query query = session.createQuery("update Costumer " +
+                "set name = :valueForName " +
+                "where name like :value1 or id = :value2");
+        query.setParameter("valueForName", "Przemio");
+        query.setParameter("value1", "6%");
+        query.setParameter("value2", 10L);
+        query.executeUpdate();
         session.getTransaction().commit();
         session.close();
     }
