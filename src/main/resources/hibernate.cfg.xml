@@ -13,7 +13,7 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sda-jdbc?serverTimezone=UTC</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">root</property>
-        <property name="hibernate.hbm2ddl.auto">validate</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.use_sql_comments">true</property>
@@ -24,6 +24,8 @@
 
         <mapping class="pl.sda.hibernate.Costumer" />
         <mapping class="pl.sda.hibernate.Address"/>
+        <mapping class="pl.sda.hibernate.Lesson"/>
+        <mapping class="pl.sda.hibernate.Student"/>
 
 
     </session-factory>
