@@ -16,10 +16,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        SessionFactory sessionFactory = SessionManager.getSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.close();
-
+        ConsumerRepository consumerRepository = new ConsumerRepository();
+        consumerRepository.findCustomerWithAddress();
 //        selectByCriteria();
         SessionManager.getSessionFactory().close();
     }
