@@ -5,6 +5,8 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -13,7 +15,7 @@ public class Main {
 //        Session session = sessionFactory.openSession();
 //        session.close();
 
-        updateQuery();
+        deleteQuery();
         SessionManager.getSessionFactory().close();
     }
 
@@ -90,6 +92,18 @@ public class Main {
         query.setParameter("valueForName", "Przemio");
         query.setParameter("value1", "6%");
         query.setParameter("value2", 10L);
+        query.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
+
+    public static void deleteQuery(){
+        Session session = SessionManager.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query query = session
+                .createQuery("delete Costumer where id in (:idsForDelete)");
+        query.setParameter("idsForDelete", Arrays.asList(2L, 5L));
         query.executeUpdate();
         session.getTransaction().commit();
         session.close();
