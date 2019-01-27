@@ -2,6 +2,7 @@ package pl.sda.hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table
@@ -17,6 +18,16 @@ public class Address {
     private String country;
     @Column
     private Integer houseNumber;
+    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
+    private Set<Costumer> locators;
+
+    public Set<Costumer> getLocators() {
+        return locators;
+    }
+
+    public void setLocators(Set<Costumer> locators) {
+        this.locators = locators;
+    }
 
     public Long getId() {
         return id;

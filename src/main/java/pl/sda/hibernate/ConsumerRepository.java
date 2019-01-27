@@ -1,6 +1,9 @@
 package pl.sda.hibernate;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 
 public class ConsumerRepository {
 
@@ -58,5 +61,26 @@ public class ConsumerRepository {
         System.out.println(costumer.getAddress());
         session.getTransaction().commit();
         session.close();
+    }
+
+    public void findCustomerByCityName(String cityName) {
+        Transaction transaction = null;
+        try (Session session = SessionManager.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<Costumer> query = session.createQuery("select c " +
+                            "from Costumer c " +
+                            "where c.address.city = :cityName",
+                    Costumer.class);
+            query.setParameter("cityName", cityName);
+            for (Costumer costumer : query.list()) {
+                System.out.println(costumer);
+            }
+            transaction.commit();
+            transaction = null;
+        }finally {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
     }
 }
