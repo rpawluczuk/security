@@ -1,6 +1,7 @@
 package pl.sda.hibernate;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
@@ -15,11 +16,11 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-//        SessionFactory sessionFactory = SessionManager.getSessionFactory();
-//        Session session = sessionFactory.openSession();
-//        session.close();
+        SessionFactory sessionFactory = SessionManager.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.close();
 
-        selectByCriteria();
+//        selectByCriteria();
         SessionManager.getSessionFactory().close();
     }
 
@@ -116,9 +117,9 @@ public class Main {
     public static void selectByCriteria() {
         Session session = SessionManager.getSessionFactory().openSession();
         session.beginTransaction();
-// select costumerRoot
+// select *
 // from Costumer costumerRoot
-// where costumerRoot.name = Przemio
+// where costumerRoot.name = 'Przemio'
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         //typ zwracany
         CriteriaQuery<Costumer> criteriaQuery = criteriaBuilder

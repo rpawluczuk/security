@@ -16,6 +16,9 @@ public class Costumer {
     private Long id;
     @Column
     private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
 
     public Long getId() {
@@ -32,6 +35,14 @@ public class Costumer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override
