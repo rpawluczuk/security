@@ -1,9 +1,13 @@
 package pl.sda.hibernate;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -15,7 +19,7 @@ public class Main {
 //        Session session = sessionFactory.openSession();
 //        session.close();
 
-        deleteQuery();
+        selectByCriteria();
         SessionManager.getSessionFactory().close();
     }
 
@@ -98,13 +102,36 @@ public class Main {
     }
 
 
-    public static void deleteQuery(){
+    public static void deleteQuery() {
         Session session = SessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         Query query = session
                 .createQuery("delete Costumer where id in (:idsForDelete)");
         query.setParameter("idsForDelete", Arrays.asList(2L, 5L));
         query.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public static void selectByCriteria() {
+        Session session = SessionManager.getSessionFactory().openSession();
+        session.beginTransaction();
+// select costumerRoot
+// from Costumer costumerRoot
+// where costumerRoot.name = Przemio
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        //typ zwracany
+        CriteriaQuery<Costumer> criteriaQuery = criteriaBuilder
+                .createQuery(Costumer.class);
+        //inicjalizacja from
+        Root<Costumer> costumerRoot = criteriaQuery.from(Costumer.class);
+        //blok where
+        criteriaQuery.where(
+                criteriaBuilder.equal(costumerRoot.get("name"), "Przemio")
+        );
+        Query<Costumer> query = session.createQuery(criteriaQuery);
+        List<Costumer> list = query.list();
+        System.out.println(list);
         session.getTransaction().commit();
         session.close();
     }
