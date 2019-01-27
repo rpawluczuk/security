@@ -1,8 +1,11 @@
 package pl.sda.hibernate;
 
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +19,8 @@ public class Main {
         findAndChange();
         SessionManager.getSessionFactory().close();
     }
-    public static void perist(){
+
+    public static void perist() {
         Session session = SessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         Costumer costumer = new Costumer();
@@ -27,7 +31,7 @@ public class Main {
         session.close();
     }
 
-    public static void save(){
+    public static void save() {
         Session session = SessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         Costumer costumer = new Costumer();
@@ -38,7 +42,7 @@ public class Main {
         session.close();
     }
 
-    public static void find(){
+    public static void find() {
         Session session = SessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         Costumer costumer = session.find(Costumer.class, 1L);
@@ -46,7 +50,8 @@ public class Main {
         session.getTransaction().commit();
         session.close();
     }
-    public static void findAndChange(){
+
+    public static void findAndChange() {
         Session session = SessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         Costumer costumer = session.find(Costumer.class, 1L);
@@ -54,5 +59,30 @@ public class Main {
         session.getTransaction().commit();
         session.close();
     }
+
+    public static void findByName(String name) {
+        Session session = SessionManager.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query<Costumer> query = session.createQuery("select c from Costumer c " +
+                "where c.name = :value", Costumer.class);
+        query.setParameter("value", name);
+        List<Costumer> list = query.list();
+        System.out.println(list);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public static void findByNameNamedQuery(String name) {
+        Session session = SessionManager.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query<Costumer> query = session
+                .createNamedQuery("selectByName", Costumer.class);
+        query.setParameter("value", name);
+        List<Costumer> list = query.list();
+        System.out.println(list);
+        session.getTransaction().commit();
+        session.close();
+    }
+
 
 }

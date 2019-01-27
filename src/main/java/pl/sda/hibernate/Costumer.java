@@ -5,6 +5,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "customersTable")
+@NamedQueries({
+        @NamedQuery(name = "selectByName",
+                query = "select c from Costumer c where c.name = :value")
+})
 public class Costumer {
     @Id
     @Column(name = "primary_id")
